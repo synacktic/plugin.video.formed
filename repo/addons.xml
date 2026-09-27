@@ -75,9 +75,9 @@ leaves, not a list of objects. Pin Kids to the root.
   <extension point="xbmc.addon.repository" name="FORMED Add-on Repository">
     <dir>
       
-      <info compressed="false">https://raw.githubusercontent.com/synacktic/formed-kodi-repo/master/addons.xml</info>
-      <checksum>https://raw.githubusercontent.com/synacktic/formed-kodi-repo/master/addons.xml.md5</checksum>
-      <datadir zip="true">https://raw.githubusercontent.com/synacktic/formed-kodi-repo/master</datadir>
+      <info compressed="false">https://raw.githubusercontent.com/synacktic/plugin.video.formed/master/repo/addons.xml</info>
+      <checksum>https://raw.githubusercontent.com/synacktic/plugin.video.formed/master/repo/addons.xml.md5</checksum>
+      <datadir zip="true">https://raw.githubusercontent.com/synacktic/plugin.video.formed/master/repo</datadir>
     </dir>
   </extension>
 

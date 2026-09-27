@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.formed"
+       name="FORMED"
+       version="0.2.5"
+       provider-name="local">
+
+  <requires>
+    <import addon="xbmc.python" version="3.0.0"/>
+    <import addon="script.module.requests" version="2.27.1"/>
+    <!-- Required, not optional. When it was optional Kodi silently ignored
+         every inputstream.adaptive.* property and fell back to the ffmpeg
+         demuxer, which plays these streams but stalls on seek. Declaring it
+         required makes Kodi resolve and install it automatically. -->
+    <import addon="inputstream.adaptive" version="19.0.0"/>
+  </requires>
+
+  <extension point="xbmc.python.pluginsource" library="main.py">
+    <provides>video</provides>
+  </extension>
+
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">Browse and stream FORMED with your own subscription</summary>
+    <description lang="en_GB">Unofficial client for FORMED (formed.org).
+
+Signs in with your own FORMED account using the service's standard OpenID
+Connect device flow, then browses the catalogue and streams content.
+
+Playback only - this add-on does not download or record. It is not
+affiliated with or endorsed by FORMED or the Augustine Institute.</description>
+    <platform>all</platform>
+    <license>MIT</license>
+    <assets>
+      <icon>resources/icon.png</icon>
+      <fanart>resources/fanart.jpg</fanart>
+    </assets>
+    <news>0.2.5 - Confirmed against FORMED's own web bundle that the add-on
+calls the same playback endpoint the website does, so nothing here is
+out of date. Found FORMED's /api/vimeo/health-check - the same signal that
+drives the "we are facing some issues with some of our videos" banner on
+their site - and the add-on now consults it when playback fails, so a FORMED
+outage says so instead of looking like a local fault. Embed request now
+matches the web player's exactly (adds auto=1).
+0.2.4 - Playback 503s. The failure is in Vimeo OTT's edge
+(embed.vhx.tv), which returns a Fastly error page in streaks lasting minutes
+and never reaches the origin. Ruled out: the account, subscription, ticket,
+request headers, Fastly node and IP version. The add-on cannot prevent it, so
+it now fails in about two seconds instead of hanging, says plainly that the
+fault is not yours, and reports it as a notification rather than a modal
+dialog so pressing play again is one button.
+0.2.3 - Fix a blank settings screen: Kodi reads setting labels as
+string ids, so the literal English text in settings.xml rendered every row
+empty and left no way to reach sign-in. Labels now come from a proper
+strings.po. Transient HTTP 503s from FORMED are retried with backoff instead
+of killing a whole menu, connections are pooled (menus draw ~40% faster), and
+the top-level nav is cached so browsing survives an outage.
+0.2.2 - Hide menus with no video in them, Books included.
+0.2.1 - Stop duplicating subtitles. External tracks are attached only
+when the manifest has none of its own, so no more "Unknown (External)"
+copies. Added a subtitle language setting, defaulting to English.
+0.2.0 - Sign-in moved to Settings. Device code now shown in its own
+readable dialog. Video-only listings. Single-season shows go straight to
+episodes. Search works via /api/search. Added icon and fanart.
+0.1.5 - Seeking root cause: InputStream Adaptive was not installed and
+optional deps fail silently. ISA is now required, plus a clear warning if it
+is missing. Drop deprecated ResumeTime/TotalTime properties.
+0.1.4 - Resume points read from FORMED. Subtitle tracks. Seeking fix:
+prefer the H.264-only stream and send headers on segment requests.
+0.1.3 - Add the missing hop: embed page carries OTTData.config_url,
+not the manifest. Fetch the config (single-use) and pull HLS from it.
+Confirmed no DRM - mediaKeys is null with EME available.
+0.1.2 - Playback ticket found. It belongs to the account, not the
+video: /api/users/me/subscriber -&gt; subscriber.vimeoAuthTicket.
+0.1.1 - Fix empty browse menu: nav-links is nested dicts with string
+leaves, not a list of objects. Pin Kids to the root.
+0.1.0 - Initial build. Device-code sign-in, catalogue browsing, HLS playback.</news>
+  </extension>
+</addon>

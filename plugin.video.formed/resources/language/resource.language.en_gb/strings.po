@@ -1,0 +1,162 @@
+# Kodi Media Center language file
+# Addon Name: FORMED
+# Addon id: plugin.video.formed
+# Addon Provider: local
+msgid ""
+msgstr ""
+"Project-Id-Version: plugin.video.formed\n"
+"Report-Msgid-Bugs-To: https://github.com/\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: \n"
+"Language-Team: English (United Kingdom)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en_GB\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "Addon Summary"
+msgid "Browse and stream FORMED with your own subscription"
+msgstr ""
+
+msgctxt "Addon Description"
+msgid "Unofficial client for FORMED (formed.org). Signs in with your own FORMED account using the service's standard OpenID Connect device flow, then browses the catalogue and streams content. Playback only - this add-on does not download or record. It is not affiliated with or endorsed by FORMED or the Augustine Institute."
+msgstr ""
+
+# --- Categories and groups -------------------------------------------------
+
+#: Settings category
+msgctxt "#30000"
+msgid "Account"
+msgstr ""
+
+#: Settings group
+msgctxt "#30001"
+msgid "Sign in"
+msgstr ""
+
+#: Settings group
+msgctxt "#30002"
+msgid "Advanced"
+msgstr ""
+
+#: Settings category
+msgctxt "#30003"
+msgid "Playback"
+msgstr ""
+
+#: Settings group
+msgctxt "#30004"
+msgid "Streaming"
+msgstr ""
+
+# --- Setting labels --------------------------------------------------------
+
+msgctxt "#30010"
+msgid "Sign in to FORMED"
+msgstr ""
+
+msgctxt "#30011"
+msgid "Sign out"
+msgstr ""
+
+msgctxt "#30012"
+msgid "Use email/password instead of device code"
+msgstr ""
+
+msgctxt "#30013"
+msgid "Email"
+msgstr ""
+
+msgctxt "#30014"
+msgid "Prefer H.264 (better seeking)"
+msgstr ""
+
+msgctxt "#30015"
+msgid "Load subtitles when available"
+msgstr ""
+
+msgctxt "#30016"
+msgid "Subtitle language"
+msgstr ""
+
+msgctxt "#30017"
+msgid "Hide empty menus"
+msgstr ""
+
+msgctxt "#30018"
+msgid "Verbose logging"
+msgstr ""
+
+# --- Setting help text -----------------------------------------------------
+
+msgctxt "#30030"
+msgid "Shows a short code to approve on your phone or computer. Nothing is typed on the remote."
+msgstr ""
+
+msgctxt "#30031"
+msgid "Forgets the stored tokens on this device. Your FORMED account is unaffected."
+msgstr ""
+
+msgctxt "#30032"
+msgid "Leave this off. The default device-code sign-in shows a short code that you approve on your phone, so no password is typed on the remote or stored on this machine. Only turn this on if device sign-in fails."
+msgstr ""
+
+msgctxt "#30033"
+msgid "Optional. If set, you will only be asked for your password. The password itself is never saved."
+msgstr ""
+
+msgctxt "#30034"
+msgid "Use the H.264-only stream instead of the multi-codec one. The multi-codec playlist is the usual cause of video that starts fine then stalls or quits after seeking, because the player switches to a rendition the hardware cannot decode. Leave this on unless you have a reason not to."
+msgstr ""
+
+msgctxt "#30035"
+msgid "Attach subtitle tracks offered by the player. Only used when the stream does not already carry its own subtitles."
+msgstr ""
+
+msgctxt "#30036"
+msgid "Which language to attach when the add-on supplies subtitles itself. Regional variants match automatically, so English also covers en-US and the auto-generated en-x-autogen track."
+msgstr ""
+
+msgctxt "#30037"
+msgid "Leave out categories that contain no video once books and audio are filtered out. Costs a few extra requests when a menu is drawn. Turn it off if browsing feels slow."
+msgstr ""
+
+msgctxt "#30038"
+msgid "Log extra detail about ticket and manifest resolution. Turn this on if playback fails and you need to see where the chain broke."
+msgstr ""
+
+# --- Subtitle language options ---------------------------------------------
+
+msgctxt "#30050"
+msgid "English"
+msgstr ""
+
+msgctxt "#30051"
+msgid "Spanish"
+msgstr ""
+
+msgctxt "#30052"
+msgid "French"
+msgstr ""
+
+msgctxt "#30053"
+msgid "Portuguese"
+msgstr ""
+
+msgctxt "#30054"
+msgid "Italian"
+msgstr ""
+
+msgctxt "#30055"
+msgid "German"
+msgstr ""
+
+msgctxt "#30056"
+msgid "Polish"
+msgstr ""
+
+msgctxt "#30057"
+msgid "Vietnamese"
+msgstr ""

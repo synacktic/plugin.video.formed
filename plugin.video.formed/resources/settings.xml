@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!-- Labels and help text are string ids resolved from
+     resources/language/resource.language.*/strings.po. Kodi's settings parser
+     reads these attributes as integers: literal English text here parses as id
+     0 and every row in the settings window renders blank. -->
+<settings version="1">
+  <section id="plugin.video.formed">
+
+    <category id="account" label="30000" help="">
+      <group id="1" label="30001">
+
+        <setting id="signin" type="action" label="30010" help="30030">
+          <level>0</level>
+          <data>RunPlugin(plugin://plugin.video.formed/?action=signin)</data>
+          <control type="button" format="action">
+            <close>true</close>
+          </control>
+        </setting>
+
+        <setting id="signout" type="action" label="30011" help="30031">
+          <level>0</level>
+          <data>RunPlugin(plugin://plugin.video.formed/?action=signout)</data>
+          <control type="button" format="action">
+            <close>true</close>
+          </control>
+        </setting>
+
+      </group>
+      <group id="2" label="30002">
+
+        <setting id="use_password_grant" type="boolean" label="30012" help="30032">
+          <level>1</level>
+          <default>false</default>
+          <control type="toggle"/>
+        </setting>
+
+        <setting id="username" type="string" label="30013" help="30033" parent="use_password_grant">
+          <level>1</level>
+          <default></default>
+          <constraints>
+            <allowempty>true</allowempty>
+          </constraints>
+          <dependencies>
+            <dependency type="visible" setting="use_password_grant" operator="is">true</dependency>
+          </dependencies>
+          <control type="edit" format="string"/>
+        </setting>
+
+      </group>
+    </category>
+
+    <category id="playback" label="30003" help="">
+      <group id="1" label="30004">
+
+        <setting id="prefer_avc" type="boolean" label="30014" help="30034">
+          <level>1</level>
+          <default>true</default>
+          <control type="toggle"/>
+        </setting>
+
+        <setting id="enable_subtitles" type="boolean" label="30015" help="30035">
+          <level>1</level>
+          <default>true</default>
+          <control type="toggle"/>
+        </setting>
+
+        <setting id="subtitle_language" type="string" label="30016" help="30036" parent="enable_subtitles">
+          <level>1</level>
+          <default>en</default>
+          <constraints>
+            <options>
+              <option label="30050">en</option>
+              <option label="30051">es</option>
+              <option label="30052">fr</option>
+              <option label="30053">pt</option>
+              <option label="30054">it</option>
+              <option label="30055">de</option>
+              <option label="30056">pl</option>
+              <option label="30057">vi</option>
+            </options>
+          </constraints>
+          <dependencies>
+            <dependency type="enable" setting="enable_subtitles" operator="is">true</dependency>
+          </dependencies>
+          <control type="list" format="string"/>
+        </setting>
+
+        <setting id="hide_empty_menus" type="boolean" label="30017" help="30037">
+          <level>1</level>
+          <default>true</default>
+          <control type="toggle"/>
+        </setting>
+
+        <setting id="verbose_logging" type="boolean" label="30018" help="30038">
+          <level>1</level>
+          <default>false</default>
+          <control type="toggle"/>
+        </setting>
+
+      </group>
+    </category>
+
+  </section>
+</settings>

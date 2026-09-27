@@ -63,23 +63,35 @@ def read_addon_element(path):
     return tree.getroot()
 
 
+# Everything is resolved from this file's own location, so the script works in
+# any clone without editing paths into it.
+ROOT = os.path.dirname(os.path.abspath(__file__))
+
+# The generated repository lives in a subdirectory rather than at the root.
+# That is not cosmetic: with the add-on source at the root, any slip in the
+# packaging exclusions would zip this directory into the add-on, commit it,
+# and then zip that again next release.
+SUBDIR = "repo"
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--user", default="synacktic")
-    ap.add_argument("--repo", default="formed-kodi-repo")
+    ap.add_argument("--repo", default="plugin.video.formed",
+                    help="the GitHub repository name, not the add-on id")
     ap.add_argument("--branch", default="master")
     ap.add_argument("--host", choices=["raw", "pages"], default="raw",
                     help="raw=raw.githubusercontent.com (works on push); "
                          "pages=GitHub Pages (needs Pages enabled)")
-    ap.add_argument("--out", default=r"D:/Formed/formed-kodi-repo")
-    ap.add_argument("--source", default=r"D:/Formed/plugin.video.formed")
+    ap.add_argument("--out", default=os.path.join(ROOT, SUBDIR))
+    ap.add_argument("--source", default=os.path.join(ROOT, "plugin.video.formed"))
     args = ap.parse_args()
 
     if args.host == "raw":
-        base = "https://raw.githubusercontent.com/%s/%s/%s" % (
-            args.user, args.repo, args.branch)
+        base = "https://raw.githubusercontent.com/%s/%s/%s/%s" % (
+            args.user, args.repo, args.branch, SUBDIR)
     else:
-        base = "https://%s.github.io/%s" % (args.user, args.repo)
+        base = "https://%s.github.io/%s/%s" % (args.user, args.repo, SUBDIR)
 
     out = os.path.abspath(args.out)
     repo_id = "repository.formed"
