@@ -67,7 +67,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--user", default="synacktic")
     ap.add_argument("--repo", default="formed-kodi-repo")
-    ap.add_argument("--branch", default="main")
+    ap.add_argument("--branch", default="master")
     ap.add_argument("--host", choices=["raw", "pages"], default="raw",
                     help="raw=raw.githubusercontent.com (works on push); "
                          "pages=GitHub Pages (needs Pages enabled)")

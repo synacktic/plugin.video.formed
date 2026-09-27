@@ -36,7 +36,7 @@ The URLs are baked into the repository add-on, so regenerate rather than
 hand-editing:
 
 ```sh
-python build.py --user <you> --repo <repo-name> --branch main
+python build.py --user <you> --repo <repo-name> --branch master
 # or, to serve from GitHub Pages instead of raw.githubusercontent.com:
 python build.py --user <you> --repo <repo-name> --host pages
 ```
