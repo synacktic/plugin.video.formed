@@ -20,6 +20,7 @@ import os
 import re
 import shutil
 import sys
+import tempfile
 import zipfile
 import xml.etree.ElementTree as ET
 
@@ -85,7 +86,24 @@ def main():
                          "pages=GitHub Pages (needs Pages enabled)")
     ap.add_argument("--out", default=os.path.join(ROOT, SUBDIR))
     ap.add_argument("--source", default=os.path.join(ROOT, "plugin.video.formed"))
+    ap.add_argument("--install-hooks", action="store_true",
+                    help="install the pre-commit hook into this clone, so "
+                         "repo/ is rebuilt automatically on every commit")
+    ap.add_argument("--check", action="store_true",
+                    help="do not write; exit 1 if repo/ is out of date with "
+                         "the source. For hooks and CI.")
     args = ap.parse_args()
+
+    if args.install_hooks:
+        install_hooks()
+        sys.exit(0)
+
+    # --check builds somewhere disposable and compares, so it can answer
+    # "would a rebuild change anything?" without touching the tree.
+    check_against = None
+    if args.check:
+        check_against = os.path.abspath(args.out)
+        args.out = tempfile.mkdtemp(prefix="kodirepo-check-")
 
     if args.host == "raw":
         base = "https://raw.githubusercontent.com/%s/%s/%s/%s" % (
@@ -181,7 +199,73 @@ def main():
         fh.write(digest + "\n")
     print("  addons.xml (%d addons)  md5=%s" % (len(addon_elements), digest))
 
+    if check_against is not None:
+        stale = compare(check_against, out)
+        shutil.rmtree(out, ignore_errors=True)
+        if stale:
+            print("\n%s is out of date:" % SUBDIR)
+            for line in stale:
+                print("  %s" % line)
+            print("\nRun: python build.py")
+            sys.exit(1)
+        print("\n%s is up to date with the source." % SUBDIR)
+        sys.exit(0)
+
     return out, base, repo_id, plugin_id, plugin_ver
+
+
+def install_hooks():
+    """Copy hooks/ into .git/hooks.
+
+    Git deliberately does not run hooks straight out of a tracked directory -
+    cloning a repo must never execute its author's code - so they are kept in
+    hooks/ under version control and copied in explicitly.
+    """
+    src_dir = os.path.join(ROOT, "hooks")
+    dst_dir = os.path.join(ROOT, ".git", "hooks")
+    if not os.path.isdir(dst_dir):
+        print("no .git/hooks here - is this a clone?")
+        return
+    for name in sorted(os.listdir(src_dir)):
+        src, dst = os.path.join(src_dir, name), os.path.join(dst_dir, name)
+        shutil.copyfile(src, dst)
+        os.chmod(dst, 0o755)
+        print("installed .git/hooks/%s" % name)
+
+
+def compare(published, fresh):
+    """Differences between a published repo tree and a freshly built one.
+
+    Zip archives are compared by their entry names and CRCs rather than by
+    file bytes: two archives built from identical sources still differ byte
+    for byte, because each stores its own modification timestamps.
+    """
+    problems = []
+
+    def entries(path):
+        with zipfile.ZipFile(path) as z:
+            return {i.filename: i.CRC for i in z.infolist()}
+
+    for dirpath, _, filenames in os.walk(fresh):
+        for f in filenames:
+            new = os.path.join(dirpath, f)
+            rel = os.path.relpath(new, fresh)
+            old = os.path.join(published, rel)
+            if not os.path.exists(old):
+                problems.append("missing: %s" % rel.replace(os.sep, "/"))
+            elif f.endswith(".zip"):
+                if entries(old) != entries(new):
+                    problems.append("contents differ: %s" % rel.replace(os.sep, "/"))
+            elif io.open(old, "rb").read() != io.open(new, "rb").read():
+                problems.append("differs: %s" % rel.replace(os.sep, "/"))
+
+    for dirpath, _, filenames in os.walk(published):
+        for f in filenames:
+            rel = os.path.relpath(os.path.join(dirpath, f), published)
+            if not os.path.exists(os.path.join(fresh, rel)):
+                problems.append("stale, no longer built: %s" % rel.replace(os.sep, "/"))
+
+    return sorted(problems)
 
 
 if __name__ == "__main__":

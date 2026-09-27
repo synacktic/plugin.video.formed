@@ -40,10 +40,23 @@ no arguments.
 ## Releasing
 
 ```sh
+python build.py --install-hooks   # once per clone
+```
+
+After that a release is just:
+
+```sh
 # 1. edit under plugin.video.formed/
 # 2. bump <addon version="..."> in plugin.video.formed/addon.xml
-python build.py
-git add -A && git commit -m "0.2.6" && git push
+git commit -am "0.2.6" && git push
+```
+
+The pre-commit hook rebuilds `repo/` and stages it, so the published tree can
+never lag the source. To check by hand, or from CI:
+
+```sh
+python build.py            # rebuild
+python build.py --check    # exit 1 if repo/ is stale, writes nothing
 ```
 
 **The version number is the trigger.** Kodi polls `addons.xml.md5`; when it

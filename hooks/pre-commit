@@ -1,0 +1,30 @@
+#!/bin/sh
+# Rebuild repo/ before every commit, so the published tree can never lag the
+# source. Without this the classic mistake is bumping the add-on version,
+# committing, pushing - and having nobody receive the update, because
+# addons.xml still advertises the old one.
+#
+# Install:  python build.py --install-hooks
+set -e
+
+root=$(git rev-parse --show-toplevel)
+
+for py in python python3 py; do
+    if command -v "$py" >/dev/null 2>&1; then
+        PY="$py"
+        break
+    fi
+done
+
+if [ -z "$PY" ]; then
+    echo "pre-commit: no python on PATH; skipping repo/ rebuild." >&2
+    echo "pre-commit: run 'python build.py' by hand before pushing." >&2
+    exit 0
+fi
+
+if ! "$PY" "$root/build.py" >/dev/null; then
+    echo "pre-commit: build.py failed - commit aborted." >&2
+    exit 1
+fi
+
+git add "$root/repo"
